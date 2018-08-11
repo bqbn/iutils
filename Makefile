@@ -8,4 +8,4 @@ publish:
 	twine upload dist/*
 
 tests:
-	python -m unittest iutils/tests/test_utils.py
+	python -m unittest iutils/tests/test_*.py
