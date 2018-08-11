@@ -9,6 +9,12 @@ class TestTwoLevelSplit(unittest.TestCase):
             ['a', 'b c', 'd']
         )
 
+        # multiple spaces with quotes
+        self.assertEqual(
+            two_level_split('a "b c" "d" "ef  gh"'),
+            ['a', 'b c', 'd', 'ef  gh']
+        )
+
         self.assertEqual(
             two_level_split('a "b c d"e f g" h'),
             ['a', 'b c d"e f g', 'h']

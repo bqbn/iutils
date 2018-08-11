@@ -13,7 +13,8 @@ def two_level_split(line, sep=' ', quote='"'):
 
     for field in line.split(sep):
         if not field:
-            results.append(field)
+            # append to temp if in_quotes, otherwise append to results
+            temp.append(field) if in_quotes else results.append(field)
             continue
 
         if in_quotes:
