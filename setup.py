@@ -105,4 +105,8 @@ setup(
     },
     # Needed by the pipenv-setup tool.
     dependency_links=[],
+    entry_points="""
+        [console_scripts]
+        qaws=qaws.qaws:ec2
+    """,
 )
