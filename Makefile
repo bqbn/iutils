@@ -4,6 +4,7 @@ build: clean
 	pipenv run pipenv-setup sync --dev
 
 clean:
+	find . -name __pycache__ -type d -print0 | xargs rm -rf
 	rm -rf build/ dist/ *.egg-info
 
 publish:
