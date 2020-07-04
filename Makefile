@@ -1,11 +1,13 @@
 build: clean
-	python setup.py bdist_wheel
+	pipenv install && pipenv clean
+	pipenv run python setup.py bdist_wheel
+	pipenv run pipenv-setup sync --dev
 
 clean:
 	rm -rf build/ dist/ *.egg-info
 
 publish:
-	twine upload dist/*
+	pipenv run twine upload dist/*
 
 tests:
-	python -m unittest iutils/tests/test_*.py
+	pipenv run python -m unittest iutils/tests/test_*.py
