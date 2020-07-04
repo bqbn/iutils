@@ -1,26 +1,21 @@
 """
 For references of this file, see
-
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
+    * https://github.com/pypa/sampleproject
+    * https://packaging.python.org/en/latest/distributing.html
 """
 
-# Always prefer setuptools over distutils
 from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
-from os import path
+import pathlib
 
-here = path.abspath(path.dirname(__file__))
+here = pathlib.Path(__file__).parent.resolve()
 
-# Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+# Get the long description from the README file.
+long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
     name='iutils',
     version='0.0.3',
-    description='''A collection of utility modules''',
+    description='''A collection of my utility modules''',
 
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -37,11 +32,16 @@ setup(
         'Programming Language :: Python :: 3',
     ],
 
-    keywords='utility utils devops',
+    keywords='devops utility utils',
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
 
+    python_requires='>=3, <4',
+
     install_requires=[
+        'awscli',
+        'click',
+        'jmespath',
     ],
 
     # Additional groups of dependencies. They can be install by using
@@ -57,5 +57,7 @@ setup(
         'Bug Reports': 'https://github.com/bqbn/iutils/issues',
         'Source': 'https://github.com/bqbn/iutils',
     },
-)
 
+    # Needed by the pipenv-setup tool.
+    dependency_links=[],
+)
