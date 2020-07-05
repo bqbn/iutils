@@ -14,7 +14,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="iutils",
-    version="0.0.3",
+    version="0.0.4",
     description="""A collection of my utility modules""",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -107,6 +107,6 @@ setup(
     dependency_links=[],
     entry_points="""
         [console_scripts]
-        qaws=qaws.qaws:ec2
+        qaws=qaws.qaws:cli
     """,
 )
