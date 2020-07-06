@@ -1,15 +1,17 @@
-import subprocess
+from resource import Resource
 
 
-class EC2:
+class EC2(Resource):
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.attrib = kwargs["attrib"]
-        self.limit = kwargs["limit"]
+        self.known_attributes = kwargs["known_attributes"]
         self.output = kwargs["output"]
         self.tag_key = kwargs["tag_key"]
         self.tag_value = kwargs["tag_value"]
 
-    def run(self):
+
+    def get_cmd(self):
         cmd = [
             "aws",
             "ec2",
@@ -22,18 +24,31 @@ class EC2:
             f"Reservations[*].Instances[*].[{','.join(self.attrib)}]",
         ]
 
-        res = subprocess.run(cmd, capture_output=True, encoding="utf-8")
+        return cmd
 
-        if res.returncode != 0:
-            raise Exception(res.stderr)
 
-        # No error, thus we print lines.
-        if self.limit == 0:
-            print(res.stdout)
-        else:
-            n = 0
-            for line in res.stdout.split("\n"):
-                print(line)
-                n += 1
-                if n >= self.limit:
-                    break
+    def get_known_attributes(self):
+        return [
+            "ImageId",
+            "InstanceId",
+            "InstanceType",
+            "KeyName",
+            "LaunchTime",
+            "Monitoring.State",
+            "Placement.AvailabilityZone",
+            "PrivateDnsName",
+            "PrivateIpAddress",
+            "PublicDnsName",
+            "PublicIpAddress",
+            "SubnetId",
+            "VpcId",
+            "BlockDeviceMappings",
+            "EbsOptimized",
+            "IamInstanceProfile",
+            "IamInstanceProfile.Arn",
+            "RootDeviceName",
+            "RootDeviceType",
+            "SecurityGroups",
+            "Tags",
+            "OwnerId",
+        ]
