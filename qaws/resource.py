@@ -26,7 +26,7 @@ class Resource:
 
         # No error, thus we print lines.
         if self.limit == 0:
-            print(res.stdout)
+            print(res.stdout.strip())
         else:
             n = 0
             for line in res.stdout.split("\n"):

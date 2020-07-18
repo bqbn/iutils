@@ -19,10 +19,10 @@ def cli(*args, **kwargs):
 @cli.command()
 @click.option(
     "--attrib",
-    default=["PrivateIpAddress"],
+    default=["InstanceId", "InstanceType", "KeyName", "ImageId", "PrivateIpAddress", "LaunchTime"],
     show_default=True,
     multiple=True,
-    help="One or multiple attributes to show",
+    help="One or multiple comma-seperated attributes to show",
 )
 @click.option(
     "--limit",
