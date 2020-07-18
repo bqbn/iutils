@@ -7,7 +7,7 @@ clean:
 	find . -name __pycache__ -type d -print0 | xargs rm -rf
 	rm -rf build/ dist/ *.egg-info
 
-publish:
+publish: build
 	pipenv run twine upload dist/*
 
 tests:
