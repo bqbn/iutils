@@ -10,7 +10,6 @@ class EC2(Resource):
         self.tag_key = kwargs["tag_key"]
         self.tag_value = kwargs["tag_value"]
 
-
     def get_cmd(self):
         cmd = [
             "aws",
@@ -25,7 +24,6 @@ class EC2(Resource):
         ]
 
         return cmd
-
 
     def get_known_attributes(self):
         return [

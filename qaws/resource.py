@@ -1,6 +1,7 @@
 import click
 import subprocess
 
+
 class Resource:
     def __init__(self, *args, **kwargs):
         self.limit = kwargs["limit"]
@@ -34,4 +35,3 @@ class Resource:
                 n += 1
                 if n >= self.limit:
                     break
-
