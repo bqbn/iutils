@@ -10,7 +10,7 @@ class EC2(Resource):
         self.tag_key = kwargs["tag_key"]
         self.tag_value = kwargs["tag_value"]
 
-    def get_cmd(self):
+    def get_awscli_command_line(self):
         cmd = [
             "aws",
             "ec2",

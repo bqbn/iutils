@@ -9,7 +9,7 @@ class Resource:
     def get_known_attributes(self):
         return []
 
-    def get_cmd(self):
+    def get_awscli_command_line(self):
         return ""
 
     def run(self):
@@ -18,7 +18,7 @@ class Resource:
                 click.echo(attrib)
             return
 
-        cmd = self.get_cmd()
+        cmd = self.get_awscli_command_line()
 
         res = subprocess.run(cmd, capture_output=True, encoding="utf-8")
 
