@@ -1,7 +1,7 @@
 build: clean
-	pipenv install && pipenv clean
-	pipenv run python setup.py bdist_wheel
+	pipenv --rm && rm -f Pipefile.lock && pipenv install --dev
 	pipenv run pipenv-setup sync --dev
+	pipenv run python setup.py bdist_wheel
 
 clean:
 	find . -name __pycache__ -type d -print0 | xargs rm -rf
