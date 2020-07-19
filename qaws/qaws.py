@@ -1,7 +1,7 @@
 import click
 
 from awscli.completer import Completer as AwsCompleter
-from ec2 import EC2
+from .ec2 import EC2
 
 
 # Need invoke_without_commands=True because need to call --all-commands
