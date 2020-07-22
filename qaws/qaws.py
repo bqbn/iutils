@@ -18,7 +18,7 @@ def cli(*args, **kwargs):
 
 @cli.command()
 @click.option(
-    '--attrib',
+    '--attrib', '-a',
     default=[
         'InstanceId',
         'InstanceType',
@@ -47,8 +47,8 @@ def cli(*args, **kwargs):
     show_default=True,
     help='The formatting style for command output.',
 )
-@click.option('--tag-key', default='Name', show_default=True)
-@click.option('--tag-value')
+@click.option('--tag-key', '-k', default='Name', show_default=True)
+@click.option('--tag-value', '-v')
 def ec2(*args, **kwargs):
     EC2(*args, **kwargs).run()
 
