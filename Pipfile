@@ -12,6 +12,7 @@ wheel = "*"
 
 [packages]
 awscli = "*"
+boto3 = "*"
 click = "*"
 jmespath = "*"
 

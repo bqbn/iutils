@@ -2,6 +2,7 @@ import click
 
 from awscli.completer import Completer as AwsCompleter
 from .ec2 import EC2
+from .elb import ELB
 
 
 # Need invoke_without_commands=True because need to call --all-commands
@@ -39,7 +40,9 @@ def cli(*args, **kwargs):
     help="Limit the number of results that get shown. 0 means no limit.",
 )
 @click.option(
-    "--known-attributes", is_flag=True, help="List all known attributes.",
+    "--known-attributes",
+    is_flag=True,
+    help="List all known attributes by this script.",
 )
 @click.option(
     "--output",
@@ -52,6 +55,20 @@ def cli(*args, **kwargs):
 @click.option("--tag-value", "-v")
 def ec2(*args, **kwargs):
     EC2(*args, **kwargs).run()
+
+
+@cli.command()
+@click.option(
+    "--limit",
+    default=0,
+    show_default=True,
+    help="Limit the number of results that get shown. 0 means no limit.",
+)
+@click.option(
+    "--show-limits", is_flag=True, help="Show ELB limits for this account.",
+)
+def elb(*args, **kwargs):
+    ELB(*args, **kwargs).run()
 
 
 if __name__ == "__main__":
