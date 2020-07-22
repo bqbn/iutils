@@ -5,7 +5,6 @@ class EC2(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.attrib = kwargs["attrib"]
-        self.known_attributes = kwargs["known_attributes"]
         self.output = kwargs["output"]
         self.tag_key = kwargs["tag_key"]
         self.tag_value = kwargs["tag_value"]
