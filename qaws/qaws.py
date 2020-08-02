@@ -18,27 +18,21 @@ def cli(*args, **kwargs):
             click.echo(cmd)
 
 
-@cli.command()
+@cli.command(help="Use tags to query EC2 instances and show their attributes.")
 @click.option(
-    "--attrib",
+    "--attributes",
     "-a",
     default=[
-        "InstanceId",
-        "InstanceType",
-        "KeyName",
-        "ImageId",
-        "PrivateIpAddress",
-        "LaunchTime",
+        "instance_id",
+        "instance_type",
+        "key_name",
+        "image_id",
+        "private_ip_address",
+        "launch_time",
     ],
     show_default=True,
     multiple=True,
-    help="One or multiple comma-seperated attributes to show",
-)
-@click.option(
-    "--limit",
-    default=0,
-    show_default=True,
-    help="Limit the number of results that get shown. 0 means no limit.",
+    help="One or multiple attributes to show.",
 )
 @click.option(
     "--known-attributes",
@@ -46,14 +40,19 @@ def cli(*args, **kwargs):
     help="List all known attributes by this script.",
 )
 @click.option(
-    "--output",
-    type=click.Choice(["json", "table", "text"], case_sensitive=False),
-    default="text",
+    "--tag-key",
+    "-k",
+    multiple=True,
+    default=["Name"],
     show_default=True,
-    help="The formatting style for command output.",
+    help="One or multiple tag key names. When multiple tag key names are specified, they all use the same values as specified by the --tag-value option.",
 )
-@click.option("--tag-key", "-k", default="Name", show_default=True)
-@click.option("--tag-value", "-v")
+@click.option(
+    "--tag-value",
+    "-v",
+    multiple=True,
+    help="One or multiple tag values. If no value is specified, then all the instances that have the specified tag keys are listed.",
+)
 def ec2(*args, **kwargs):
     EC2(*args, **kwargs).run()
 

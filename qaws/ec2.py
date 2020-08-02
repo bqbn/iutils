@@ -1,51 +1,73 @@
 from .resource import Resource
+import boto3
+import re
 
 
 class EC2(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.attrib = kwargs["attrib"]
-        self.output = kwargs["output"]
+
+        self.attributes = kwargs["attributes"]
+        self.known_attributes = kwargs["known_attributes"]
         self.tag_key = kwargs["tag_key"]
         self.tag_value = kwargs["tag_value"]
 
-    def get_awscli_command_line(self):
-        cmd = [
-            "aws",
-            "ec2",
-            "describe-instances",
-            "--output",
-            self.output,
-            "--filter",
-            f"Name=tag:{self.tag_key},Values={self.tag_value}",
-            "--query",
-            f"Reservations[*].Instances[*].[{','.join(self.attrib)}]",
-        ]
+        self.ec2 = boto3.resource("ec2")
 
-        return cmd
+    def run(self):
+        if self.known_attributes:
+            self.print_known_attributes_and_return()
+
+        self.print_attributes_for_instances(self.get_instances())
+
+    def get_instances(self):
+        instances = []
+        if self.tag_value:
+            filters = [
+                {"Name": f"tag:{tag_key}", "Values": self.tag_value,}
+                for tag_key in self.tag_key
+            ]
+        else:
+            filters = [
+                {"Name": "tag-key", "Values": self.tag_key,},
+            ]
+        instances = [
+            {
+                attrib: getattr(inst, attrib, "UNKNOWN_ATTRIBUTE")
+                for attrib in self.attributes
+            }
+            for inst in self.ec2.instances.filter(Filters=filters)
+        ]
+        return instances
+
+    def print_attributes_for_instances(self, instances):
+        for inst in instances:
+            # Here we avoid the complexity of using a f-string and unpacking
+            # the values list.
+            print(*inst.values(), sep="\t")
 
     def get_known_attributes(self):
         return [
-            "ImageId",
-            "InstanceId",
-            "InstanceType",
-            "KeyName",
-            "LaunchTime",
-            "Monitoring.State",
-            "Placement.AvailabilityZone",
-            "PrivateDnsName",
-            "PrivateIpAddress",
-            "PublicDnsName",
-            "PublicIpAddress",
-            "SubnetId",
-            "VpcId",
-            "BlockDeviceMappings",
-            "EbsOptimized",
-            "IamInstanceProfile",
-            "IamInstanceProfile.Arn",
-            "RootDeviceName",
-            "RootDeviceType",
-            "SecurityGroups",
-            "Tags",
-            "OwnerId",
+            "image_id",
+            "instance_id",
+            "instanceType",
+            "key_name",
+            "launch_time",
+            "monitoring",
+            "placement",
+            "private_dns_name",
+            "private_ip_address",
+            "public_dns_name",
+            "public_ip_address",
+            "subnet_id",
+            "vpc_id",
+            "block_device_mappings",
+            "ebs_optimized",
+            "iam_instance_profile",
+            "iam_instance_profile",
+            "root_device_name",
+            "root_device_type",
+            "security_groups",
+            "tags",
+            "owner_id",
         ]

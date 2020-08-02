@@ -1,16 +1,22 @@
 import click
 import subprocess
+import logging
 
 
 class Resource:
     def __init__(self, *args, **kwargs):
-        self.limit = kwargs["limit"]
+        self.logger = logging.getLogger(__name__)
 
     def get_known_attributes(self):
         return []
 
     def get_awscli_command_line(self):
         return ""
+
+    def print_known_attributes_and_return(self):
+        for attrib in self.get_known_attributes():
+            print(attrib)
+        return
 
     def run(self):
         if self.known_attributes:
