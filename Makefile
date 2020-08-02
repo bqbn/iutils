@@ -1,6 +1,5 @@
 build: clean
 	pipenv --rm && rm -f Pipefile.lock && pipenv install --dev
-	pipenv run pipenv-setup sync --dev
 	pipenv run python setup.py bdist_wheel
 
 clean:

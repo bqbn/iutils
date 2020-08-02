@@ -6,14 +6,13 @@ verify_ssl = true
 # Refer to https://www.python.org/dev/peps/pep-0440/#version-specifiers for python
 # package version specifiers.
 [dev-packages]
-pipenv-setup = "*"
 twine = "*"
 wheel = "*"
 
 [packages]
 awscli = "*"
-boto3 = "*"
-click = "*"
+boto3 = ">1.14"
+click = ">7.1"
 jmespath = "*"
 
 [requires]
