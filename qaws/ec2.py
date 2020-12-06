@@ -17,6 +17,7 @@ class EC2(Resource):
     def run(self):
         if self.known_attributes:
             self.print_known_attributes_and_return()
+            return
 
         self.print_attributes_for_instances(self.get_instances())
 
