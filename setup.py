@@ -31,21 +31,12 @@ setup(
     keywords="devops utility utils",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
     python_requires=">=3, <4",
-    install_requires=[
-        "boto3>=1.14.33",
-        "click>=7.1.2",
-    ],
+    install_requires=["boto3>=1.14.33", "click>=7.1.2",],
     # Additional groups of dependencies. They can be install by using
     # the "extras" syntax, for example:
     #
     #   $ pip install <module-name>[dev]
-    extras_require={
-        "dev": [
-            "twine>=3.2.0",
-            "wheel>=0.34.2",
-        ],
-        "test": [],
-    },
+    extras_require={"dev": ["twine>=3.2.0", "wheel>=0.34.2",], "test": [],},
     project_urls={
         "Bug Reports": "https://github.com/bqbn/iutils/issues",
         "Source": "https://github.com/bqbn/iutils",

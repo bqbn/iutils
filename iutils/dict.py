@@ -2,13 +2,13 @@
 
 
 def deep_merge(a, b, level=0, max_depth=9):
-    '''Deep merge 2 dicts a and b
+    """Deep merge 2 dicts a and b
 
     Dict b is merged into dict a. If a and b have the same key on the same
     level, b's value override a's.
 
     The maximum recusive depth is 9 by default.
-    '''
+    """
 
     if level >= max_depth:
         return b
@@ -23,9 +23,7 @@ def deep_merge(a, b, level=0, max_depth=9):
 
     for key in b:
         if key in a:
-            a[key] = deep_merge(
-                a[key], b[key], level=level, max_depth=max_depth
-            )
+            a[key] = deep_merge(a[key], b[key], level=level, max_depth=max_depth)
         else:
             a[key] = b[key]
 

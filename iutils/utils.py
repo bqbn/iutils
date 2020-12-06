@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 
-def two_level_split(line, sep=' ', quote='"'):
-    '''Split a line by sep.
+def two_level_split(line, sep=" ", quote='"'):
+    """Split a line by sep.
 
     The line may optionally contains fields that are quoted by the quote sign.
-    '''
+    """
 
     in_quotes = False
     results = []
