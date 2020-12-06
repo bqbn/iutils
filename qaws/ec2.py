@@ -1,4 +1,5 @@
 from .resource import Resource
+from operator import itemgetter
 import boto3
 import re
 
@@ -21,8 +22,14 @@ class EC2(Resource):
 
         self.print_attributes_for_instances(self.get_instances())
 
-    def get_instances(self):
+    def get_instances(self, order_by="launch_time"):
+        """Return a list of instances sorted by the "order_by" attribute.
+        """
         instances = []
+
+        # If tag_value exists, filter by tag_key and tag_value; otherwise filter
+        # to find all resources that have a tag with tag_key, regardless of the
+        # tag value.
         if self.tag_value:
             filters = [
                 {"Name": f"tag:{tag_key}", "Values": self.tag_value,}
@@ -32,6 +39,7 @@ class EC2(Resource):
             filters = [
                 {"Name": "tag-key", "Values": self.tag_key,},
             ]
+
         instances = [
             {
                 attrib: getattr(inst, attrib, "UNKNOWN_ATTRIBUTE")
@@ -39,6 +47,10 @@ class EC2(Resource):
             }
             for inst in self.ec2.instances.filter(Filters=filters)
         ]
+
+        if order_by in self.attributes:
+            instances = sorted(instances, key=itemgetter(order_by))
+
         return instances
 
     def print_attributes_for_instances(self, instances):
