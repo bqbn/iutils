@@ -10,6 +10,7 @@ class EC2(Resource):
 
         self.attributes = kwargs["attributes"]
         self.known_attributes = kwargs["known_attributes"]
+        self.order_by = kwargs["order_by"]
         self.tag_key = kwargs["tag_key"]
         self.tag_value = kwargs["tag_value"]
 
@@ -20,7 +21,7 @@ class EC2(Resource):
             self.print_known_attributes_and_return()
             return
 
-        self.print_attributes_for_instances(self.get_instances())
+        self.print_attributes_for_instances(self.get_instances(order_by=self.order_by))
 
     def get_instances(self, order_by="launch_time"):
         """Return a list of instances sorted by the "order_by" attribute.

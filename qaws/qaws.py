@@ -40,6 +40,13 @@ def cli(*args, **kwargs):
     help="List all known attributes by this script.",
 )
 @click.option(
+    "--order-by",
+    "-o",
+    default="launch_time",
+    show_default=True,
+    help="Order by attribute",
+)
+@click.option(
     "--tag-key",
     "-k",
     multiple=True,
