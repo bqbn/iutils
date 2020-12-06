@@ -41,16 +41,24 @@ class EC2(Resource):
                 {"Name": "tag-key", "Values": self.tag_key,},
             ]
 
+        # Filter instances, sort them by the order_by attribute, then remove the
+        # order_by attribute if it is not in the original attributes list.
+        attributes = list(self.attributes)
+        if not order_by in self.attributes:
+            attributes.append(order_by)
         instances = [
             {
                 attrib: getattr(inst, attrib, "UNKNOWN_ATTRIBUTE")
-                for attrib in self.attributes
+                for attrib in attributes
             }
             for inst in self.ec2.instances.filter(Filters=filters)
         ]
-
-        if order_by in self.attributes:
-            instances = sorted(instances, key=itemgetter(order_by))
+        instances = sorted(instances, key=itemgetter(order_by))
+        if not order_by in self.attributes:
+            instances = [
+                {k: v for k, v in inst.items() if k != order_by} for inst in instances
+            ]
+            print(instances)
 
         return instances
 

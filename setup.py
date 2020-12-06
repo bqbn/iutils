@@ -14,7 +14,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="iutils",
-    version="0.0.12",
+    version="0.0.13",
     description="""A collection of my utility modules""",
     long_description=long_description,
     long_description_content_type="text/markdown",
