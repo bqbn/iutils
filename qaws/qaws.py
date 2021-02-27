@@ -4,6 +4,7 @@ from awscli.completer import Completer as AwsCompleter
 from .ec2 import EC2
 from .elb import ELB
 from .resources import Resources
+from .route53 import Route53
 
 
 # Need invoke_without_commands=True because need to call --all-commands
@@ -81,6 +82,22 @@ def ec2(*args, **kwargs):
 @click.option("--tag-value", "-v")
 def elb(*args, **kwargs):
     ELB(*args, **kwargs).run()
+
+
+@cli.command()
+@click.option(
+    "--list-hosted-zones",
+    default=None,
+    help='List hosted zones; Use "all" to list all zones or zones that contain the supplied word',
+)
+@click.option(
+    "--show-record-for", help="The record name",
+)
+@click.option(
+    "--zone-name", help="The zone name",
+)
+def route53(*args, **kwargs):
+    Route53(*args, **kwargs).run()
 
 
 @cli.command()
