@@ -72,7 +72,7 @@ class EC2(Resource):
         return [
             "image_id",
             "instance_id",
-            "instanceType",
+            "instance_type",
             "key_name",
             "launch_time",
             "monitoring",
