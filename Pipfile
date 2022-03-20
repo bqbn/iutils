@@ -19,6 +19,7 @@ awscli = "*"
 boto3 = "~= 1.21"
 click = "~= 8.0"
 jmespath = "~= 1.0"
+requests = "~= 2.27"
 
 [requires]
 python_version = "3.7"
