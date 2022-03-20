@@ -1,7 +1,7 @@
 """
 For references of this file, see
     * https://github.com/pypa/sampleproject
-    * https://packaging.python.org/en/latest/distributing.html
+    * https://packaging.python.org/en/latest/
 """
 
 from setuptools import setup, find_packages
@@ -43,8 +43,9 @@ setup(
     },
     # Needed by the pipenv-setup tool.
     dependency_links=[],
-    entry_points="""
-        [console_scripts]
-        qaws=qaws.qaws:cli
-    """,
+    entry_points={
+        'console_scripts': [
+            'qaws=qaws.qaws:cli',
+        ],
+    },
 )
