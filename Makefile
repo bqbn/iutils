@@ -1,10 +1,10 @@
 build: clean
-	pipenv --rm && rm -f Pipefile.lock && pipenv install --dev
-	pipenv run python setup.py bdist_wheel
+	pipenv run python -m build --wheel
 
 clean:
-	find . -name __pycache__ -type d -print0 | xargs rm -rf
-	rm -rf build/ dist/ *.egg-info
+	find . -type d -name __pycache__ -print0 | xargs rm -rfv
+	find . -type d -name \*\.egg-info -print0 | xargs rm -rfv
+	rm -rfv build/ dist/
 
 publish: build
 	pipenv run twine upload dist/*
