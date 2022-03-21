@@ -53,6 +53,7 @@ def main(*args, **kwargs):
     help="The role of the member."
 )
 def members(**kwargs):
+    """Show members of a team by their roles"""
     for member in SentryApi(
         kwargs["host_url"], kwargs["auth_token"]
     ).filter_by_role_name(
