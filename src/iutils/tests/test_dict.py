@@ -8,19 +8,49 @@ class TestDeepMerge(unittest.TestCase):
         # when reaches the max depth, it should return b
         self.assertEqual(
             deep_merge(
-                {"0a": {"1a": {"2a": {"3a": {},},}, "1b": 1, "1c": [1],},},
                 {
                     "0a": {
-                        "1a": {"2a": {"3a": {"4a": (1, "a"),},},},
-                        "1b": {"2b": {"3b": [1],},},
+                        "1a": {
+                            "2a": {
+                                "3a": {},
+                            },
+                        },
+                        "1b": 1,
+                        "1c": [1],
+                    },
+                },
+                {
+                    "0a": {
+                        "1a": {
+                            "2a": {
+                                "3a": {
+                                    "4a": (1, "a"),
+                                },
+                            },
+                        },
+                        "1b": {
+                            "2b": {
+                                "3b": [1],
+                            },
+                        },
                     },
                 },
                 max_depth=2,
             ),
             {
                 "0a": {
-                    "1a": {"2a": {"3a": {"4a": (1, "a"),},},},
-                    "1b": {"2b": {"3b": [1],},},
+                    "1a": {
+                        "2a": {
+                            "3a": {
+                                "4a": (1, "a"),
+                            },
+                        },
+                    },
+                    "1b": {
+                        "2b": {
+                            "3b": [1],
+                        },
+                    },
                     "1c": [1],
                 },
             },
@@ -35,7 +65,19 @@ class TestDeepMerge(unittest.TestCase):
         # same key overwrites
         self.assertEqual(deep_merge({"a": 1}, {"a": 2}), {"a": 2})
         self.assertEqual(
-            deep_merge({"a": {"b": 1, "c": 2,}}, {"a": {"c": 3,}}),
+            deep_merge(
+                {
+                    "a": {
+                        "b": 1,
+                        "c": 2,
+                    }
+                },
+                {
+                    "a": {
+                        "c": 3,
+                    }
+                },
+            ),
             {"a": {"b": 1, "c": 3}},
         )
 
@@ -43,6 +85,24 @@ class TestDeepMerge(unittest.TestCase):
         self.assertEqual(deep_merge({"a": 1}, {"b": 2}), {"a": 1, "b": 2})
 
         self.assertEqual(
-            deep_merge({"a": {"b": 1, "c": 2,}}, {"a": {"d": 3,}}),
-            {"a": {"b": 1, "c": 2, "d": 3,}},
+            deep_merge(
+                {
+                    "a": {
+                        "b": 1,
+                        "c": 2,
+                    }
+                },
+                {
+                    "a": {
+                        "d": 3,
+                    }
+                },
+            ),
+            {
+                "a": {
+                    "b": 1,
+                    "c": 2,
+                    "d": 3,
+                }
+            },
         )

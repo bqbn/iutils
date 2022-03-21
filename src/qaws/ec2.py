@@ -24,8 +24,7 @@ class EC2(Resource):
         self.print_attributes_for_instances(self.get_instances(order_by=self.order_by))
 
     def get_instances(self, order_by="launch_time"):
-        """Return a list of instances sorted by the "order_by" attribute.
-        """
+        """Return a list of instances sorted by the "order_by" attribute."""
         instances = []
 
         # If tag_value exists, filter by tag_key and tag_value; otherwise filter
@@ -33,12 +32,18 @@ class EC2(Resource):
         # tag value.
         if self.tag_value:
             filters = [
-                {"Name": f"tag:{tag_key}", "Values": self.tag_value,}
+                {
+                    "Name": f"tag:{tag_key}",
+                    "Values": self.tag_value,
+                }
                 for tag_key in self.tag_key
             ]
         else:
             filters = [
-                {"Name": "tag-key", "Values": self.tag_key,},
+                {
+                    "Name": "tag-key",
+                    "Values": self.tag_key,
+                },
             ]
 
         # Filter instances, sort them by the order_by attribute, then remove the

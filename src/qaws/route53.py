@@ -21,8 +21,7 @@ class Route53(Resource):
             self.list_hosted_zones(self.list_hosted_zone_name)
 
     def get_hosted_zones_by_name(self, zone_name=None):
-        """ Return all hosted zones if no zone name is provided.
-        """
+        """Return all hosted zones if no zone name is provided."""
         hosted_zones = []
 
         paginator = self.client.get_paginator("list_hosted_zones")
@@ -87,7 +86,8 @@ class Route53(Resource):
         zone_id = self.get_zone_id_by_name(zone_name)
         while True:
             for res in paginator.paginate(
-                HostedZoneId=zone_id, PaginationConfig=pagination_config,
+                HostedZoneId=zone_id,
+                PaginationConfig=pagination_config,
             ):
                 records += [
                     record

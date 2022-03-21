@@ -11,7 +11,9 @@ from .route53 import Route53
 # without any command.
 @click.group(invoke_without_command=True)
 @click.option(
-    "--all-commands", is_flag=True, help="List all known commands.",
+    "--all-commands",
+    is_flag=True,
+    help="List all known commands.",
 )
 def cli(*args, **kwargs):
     if kwargs["all_commands"]:
@@ -73,10 +75,15 @@ def ec2(*args, **kwargs):
     help="Limit the number of results that get shown. 0 means no limit",
 )
 @click.option(
-    "--list", "-l", is_flag=True, help="List ELBs for this account",
+    "--list",
+    "-l",
+    is_flag=True,
+    help="List ELBs for this account",
 )
 @click.option(
-    "--show-limits", is_flag=True, help="Show ELB limits for this account.",
+    "--show-limits",
+    is_flag=True,
+    help="Show ELB limits for this account.",
 )
 @click.option("--tag-key", "-k")
 @click.option("--tag-value", "-v")
@@ -91,10 +98,12 @@ def elb(*args, **kwargs):
     help='List hosted zones; Use "all" to list all zones or zones that contain the supplied word',
 )
 @click.option(
-    "--show-record-for", help="The record name",
+    "--show-record-for",
+    help="The record name",
 )
 @click.option(
-    "--zone-name", help="The zone name",
+    "--zone-name",
+    help="The zone name",
 )
 def route53(*args, **kwargs):
     Route53(*args, **kwargs).run()
@@ -117,7 +126,9 @@ def route53(*args, **kwargs):
     default=[],
 )
 @click.option(
-    "--count-by-service", is_flag=True, help="Count resources by service name.",
+    "--count-by-service",
+    is_flag=True,
+    help="Count resources by service name.",
 )
 def resources(*args, **kwargs):
     Resources(*args, **kwargs).run()
