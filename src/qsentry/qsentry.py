@@ -22,6 +22,12 @@ common_options = [
         envvar="QSENTRY_ORG_SLUG",
         help="The organization slug. Can read from the QSENTRY_ORG_SLUG env variable.",
     ),
+    click.option(
+        "--count/--no-count",
+        is_flag=True,
+        default=False,
+        help="Show the count of objects (members, teams and etc.)",
+    ),
 ]
 
 
@@ -47,21 +53,19 @@ def main(*args, **kwargs):
     help="The team slug.",
 )
 @click.option(
-    "--role",
-    default="admin",
-    show_default=True,
-    help="The role of the member."
+    "--role", default="admin", show_default=True, help="The role of the member."
 )
 def members(**kwargs):
     """Show members of a team by their roles"""
-    for member in SentryApi(
-        kwargs["host_url"], kwargs["auth_token"]
-    ).filter_by_role_name(
+    members = SentryApi(kwargs["host_url"], kwargs["auth_token"]).filter_by_role_name(
         org_slug=kwargs["org"],
         team_slug=kwargs["team"],
         role_name=kwargs["role"],
         attributes=["id", "name", "email"],
-    ):
+    )
+    if kwargs["count"]:
+        print(f"Count: {len(members)}")
+    for member in members:
         print(f"{member['id']}, {member['name']}, {member['email']}")
 
 
