@@ -63,3 +63,16 @@ class SentryApi:
                 page.json(),
             )
         return teams
+
+    def get_all_org_members(self, org_slug):
+        """Return all members of the given organization."""
+
+        members = []
+        for page in self.page_iterator(
+            urljoin(self.host_url, f"/api/0/organizations/{org_slug}/members/")
+        ):
+            members += jmespath.search(
+                "[].{id: id, email: email, role: role}",
+                page.json(),
+            )
+        return members
