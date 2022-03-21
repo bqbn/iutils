@@ -9,6 +9,23 @@ class SentryApi:
         self.host_url = host_url
         self.auth_header = {"Authorization": f"Bearer {auth_token}"}
 
+    def page_iterator(self, url):
+        """Return an iterator that goes through the paginated results.
+
+        See https://docs.sentry.io/api/pagination/ for Sentry's pagination API.
+        """
+
+        while True:
+            res = requests.get(url, headers=self.auth_header)
+            if res.status_code == requests.codes.ok:
+                yield res
+                if res.links and res.links["next"]["results"]:
+                    url = res.links["next"]["url"]
+                else:
+                    break
+            else:
+                res.raise_for_status()
+
     def filter_by_role_name(
         self, org_slug, team_slug, role_name, attributes=["id", "email"]
     ):
@@ -18,21 +35,18 @@ class SentryApi:
         attributes argument.
         """
 
-        r = requests.get(
-            urljoin(self.host_url, f"/api/0/teams/{org_slug}/{team_slug}/members/"),
-            headers=self.auth_header,
-        )
-        if r.status_code == requests.codes.ok:
-            # construct a jmespath multiselect hash
-            multiselect_hash = ""
-            for attr in attributes:
-                multiselect_hash += f"{attr}: {attr}, "
-            multiselect_hash = multiselect_hash[0:-2]  # remove the trailing ", "
+        # construct a jmespath multiselect hash
+        multiselect_hash = ""
+        for attr in attributes:
+            multiselect_hash += f"{attr}: {attr}, "
+        multiselect_hash = multiselect_hash[0:-2]  # remove the trailing ", "
 
-            members = jmespath.search(
+        members = []
+        for page in self.page_iterator(
+            urljoin(self.host_url, f"/api/0/teams/{org_slug}/{team_slug}/members/")
+        ):
+            members += jmespath.search(
                 f"[?role == '{role_name}' && flags.\"sso:linked\"].{{{multiselect_hash}}}",
-                r.json(),
+                page.json(),
             )
-            return members
-        else:
-            r.raise_for_status()
+        return members
