@@ -1,6 +1,8 @@
 import requests
 import jmespath
 
+from urllib.parse import urljoin
+
 
 class SentryApi:
     def __init__(self, host_url, auth_token):
@@ -17,7 +19,7 @@ class SentryApi:
         """
 
         r = requests.get(
-            f"{self.host_url}/api/0/teams/{org_slug}/{team_slug}/members/",
+            urljoin(self.host_url, f"/api/0/teams/{org_slug}/{team_slug}/members/"),
             headers=self.auth_header,
         )
         if r.status_code == requests.codes.ok:
