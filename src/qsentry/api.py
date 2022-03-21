@@ -19,7 +19,7 @@ class SentryApi:
             res = requests.get(url, headers=self.auth_header)
             if res.status_code == requests.codes.ok:
                 yield res
-                if res.links and res.links["next"]["results"]:
+                if res.links and res.links["next"]["results"] == "true":
                     url = res.links["next"]["url"]
                 else:
                     break
@@ -50,3 +50,16 @@ class SentryApi:
                 page.json(),
             )
         return members
+
+    def get_all_teams(self, org_slug):
+        """Return all teams of the given organization."""
+
+        teams = []
+        for page in self.page_iterator(
+            urljoin(self.host_url, f"/api/0/organizations/{org_slug}/teams/")
+        ):
+            teams += jmespath.search(
+                "[].{slug: slug, member_count: memberCount}",
+                page.json(),
+            )
+        return teams

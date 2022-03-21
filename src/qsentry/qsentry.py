@@ -69,5 +69,17 @@ def members(**kwargs):
         print(f"{member['id']}, {member['name']}, {member['email']}")
 
 
+@main.command()
+@add_common_options(common_options)
+def teams(**kwargs):
+    teams = SentryApi(kwargs["host_url"], kwargs["auth_token"]).get_all_teams(
+        org_slug=kwargs["org"],
+    )
+    if kwargs["count"]:
+        print(f"Count: {len(teams)}")
+    for team in teams:
+        print(f"{team['slug']}")
+
+
 if __name__ == "__main__":
     main()
