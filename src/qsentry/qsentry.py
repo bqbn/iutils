@@ -1,6 +1,7 @@
 import click
 
 from .api import SentryApi
+from .commands import *
 
 
 # The common_options idea is borrowed from https://github.com/pallets/click/issues/108
@@ -50,6 +51,7 @@ def main(*args, **kwargs):
 @click.option(
     "--team",
     envvar="QSENTRY_TEAM_SLUG",
+    required=True,
     help="The team slug.",
 )
 @click.option(
@@ -57,28 +59,14 @@ def main(*args, **kwargs):
 )
 def members(**kwargs):
     """Show members of a team by their roles"""
-    members = SentryApi(kwargs["host_url"], kwargs["auth_token"]).filter_by_role_name(
-        org_slug=kwargs["org"],
-        team_slug=kwargs["team"],
-        role_name=kwargs["role"],
-        attributes=["id", "name", "email"],
-    )
-    if kwargs["count"]:
-        print(f"Count: {len(members)}")
-    for member in members:
-        print(f"{member['id']}, {member['name']}, {member['email']}")
+    MembersCommand(**kwargs).run(**kwargs)
 
 
 @main.command()
 @add_common_options(common_options)
 def teams(**kwargs):
-    teams = SentryApi(kwargs["host_url"], kwargs["auth_token"]).get_all_teams(
-        org_slug=kwargs["org"],
-    )
-    if kwargs["count"]:
-        print(f"Count: {len(teams)}")
-    for team in teams:
-        print(f"{team['slug']}")
+    """Show teams related things"""
+    TeamsCommand(**kwargs).run(**kwargs)
 
 
 @main.command()
@@ -89,14 +77,8 @@ def teams(**kwargs):
     help="List all members of a given organization.",
 )
 def orgs(**kwargs):
-    if kwargs["list_members"]:
-        members = SentryApi(kwargs["host_url"], kwargs["auth_token"]).get_all_org_members(
-            org_slug=kwargs["org"],
-        )
-        if kwargs["count"]:
-            print(f"Count: {len(members)}")
-        for member in members:
-            print(f"{member['id']}, {member['email']}, {member['role']}")
+    "Show organization related things"
+    OrgsCommand(**kwargs).run(**kwargs)
 
 
 if __name__ == "__main__":
