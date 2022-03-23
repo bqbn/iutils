@@ -8,11 +8,13 @@ from .commands import *
 common_options = [
     click.option(
         "--auth-token",
+        required=True,
         envvar="QSENTRY_AUTH_TOKEN",
         help="The auth token for invoke sentry apis. Can read from the QSENTRY_AUTH_TOKEN env variable.",
     ),
     click.option(
         "--host-url",
+        required=True,
         envvar="QSENTRY_HOST_URL",
         default="https://sentry.io/",
         show_default=True,
@@ -41,6 +43,13 @@ def add_common_options(options):
     return _add_common_options
 
 
+def comma_separated_string_to_array(ctx, param, value):
+    val = []
+    for item in value:
+        val += item.split(",")
+    return val
+
+
 @click.group(invoke_without_command=True)
 def main(*args, **kwargs):
     pass
@@ -49,16 +58,34 @@ def main(*args, **kwargs):
 @main.command()
 @add_common_options(common_options)
 @click.option(
+    "--list-all",
+    default=["id", "name", "email"],
+    show_default=True,
+    multiple=True,
+    is_flag=False,
+    flag_value="id,name,email",
+    callback=comma_separated_string_to_array,
+    help="""List all members of an organization. The argument to this option should
+            be a comma separated string. This option can be specified multiple
+            times, each with an attribute you want to see for the listed members.""",
+)
+@click.option(
+    "--search-by",
+    help="""Search a member by an attribute such as id, email and etc. The argument to
+            this option should be in "<attr>:<value>" form, for example, "id=123"
+            or "email=foo@example.com".""",
+)
+@click.option(
     "--team",
     envvar="QSENTRY_TEAM_SLUG",
-    required=True,
-    help="The team slug.",
+    help="""Show the members of a given team. Can use the --role option to filter
+            by roles.""",
 )
 @click.option(
     "--role", default="admin", show_default=True, help="The role of the member."
 )
 def members(**kwargs):
-    """Show members of a team by their roles"""
+    """Show member related things"""
     MembersCommand(**kwargs).run(**kwargs)
 
 
