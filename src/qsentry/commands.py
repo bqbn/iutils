@@ -34,7 +34,7 @@ class MembersCommand(Command):
             for member in jmespath.search(
                 f"[].{ multiselect_hash_string(attrs) }", page
             ):
-                print(", ".join(member.values()))
+                print(", ".join([str(val) for val in member.values()]))
                 self.count += 1
         if self.print_count:
             print(f"Count: {self.count}")
@@ -64,15 +64,34 @@ class MembersCommand(Command):
 
 class OrgsCommand(Command):
     def run(self, **kwargs):
-        if kwargs["list_members"]:
-            for page in SentryApi(
-                self.host_url, self.org_slug, self.auth_token
-            ).org_members_api():
-                for member in page:
-                    print(f"{member['id']}, {member['email']}, {member['role']}")
-                    self.count += 1
-            if self.print_count:
-                print(f"Count: {self.count}")
+        if kwargs["list_projects"]:
+            self.handle_the_list_projects_option(attrs=kwargs["list_projects"])
+        elif kwargs["list_users"]:
+            self.handle_the_list_users_option(attrs=kwargs["list_users"])
+
+    def handle_the_list_projects_option(self, attrs):
+        for page in SentryApi(
+            self.host_url, self.org_slug, self.auth_token
+        ).org_projects_api():
+            for member in jmespath.search(
+                f"[].{ multiselect_hash_string(attrs) }", page
+            ):
+                print(", ".join([str(val) for val in member.values()]))
+                self.count += 1
+        if self.print_count:
+            print(f"Count: {self.count}")
+
+    def handle_the_list_users_option(self, attrs):
+        for page in SentryApi(
+            self.host_url, self.org_slug, self.auth_token
+        ).org_users_api():
+            for member in jmespath.search(
+                f"[].{ multiselect_hash_string(attrs) }", page
+            ):
+                print(", ".join([str(val) for val in member.values()]))
+                self.count += 1
+        if self.print_count:
+            print(f"Count: {self.count}")
 
 
 class TeamsCommand(Command):

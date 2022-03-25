@@ -54,7 +54,6 @@ def comma_separated_string_to_array(ctx, param, value):
 def main(*args, **kwargs):
     pass
 
-
 @main.command()
 @add_common_options(common_options)
 @click.option(
@@ -99,9 +98,28 @@ def teams(**kwargs):
 @main.command()
 @add_common_options(common_options)
 @click.option(
-    "--list-members",
-    is_flag=True,
-    help="List all members of a given organization.",
+    "--list-projects",
+    default=["slug"],
+    show_default=True,
+    multiple=True,
+    is_flag=False,
+#    flag_value="slug",
+    callback=comma_separated_string_to_array,
+    help="""List all projects of an organization. The argument to this option should
+            be a comma separated string. This option can be specified multiple
+            times, each with an attribute you want to see for the listed projects.""",
+)
+@click.option(
+    "--list-users",
+    default=["id", "name", "email"],
+    show_default=True,
+    multiple=True,
+    is_flag=False,
+    flag_value="id,name,email",
+    callback=comma_separated_string_to_array,
+    help="""List all users of an organization. The argument to this option should
+            be a comma separated string. This option can be specified multiple
+            times, each with an attribute you want to see for the listed users.""",
 )
 def orgs(**kwargs):
     "Show organization related things"

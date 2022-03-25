@@ -29,6 +29,14 @@ class SentryApi:
         url = urljoin(self.host_url, f"/api/0/organizations/{self.org_slug}/members/")
         return self.page_iterator(url)
 
+    def org_projects_api(self):
+        url = urljoin(self.host_url, f"/api/0/organizations/{self.org_slug}/projects/")
+        return self.page_iterator(url)
+
+    def org_users_api(self):
+        url = urljoin(self.host_url, f"/api/0/organizations/{self.org_slug}/users/")
+        return self.page_iterator(url)
+
     def org_teams_api(self):
         url = urljoin(self.host_url, f"/api/0/organizations/{self.org_slug}/teams/")
         return self.page_iterator(url)

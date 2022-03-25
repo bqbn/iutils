@@ -10,11 +10,11 @@ from setuptools import setup, find_packages
 setup(
     # packages=find_packages(exclude=["contrib", "docs", "tests"]),
     install_requires=[
-        "awscli==1.22.77",
-        "boto3==1.21.22",
-        "click==8.0.4",
-        "jmespath==1.0.0",
-        "requests==2.27.1",
+        "awscli~=1.22",
+        "boto3~=1.21",
+        "click~=8.0",
+        "jmespath~=1.0",
+        "requests~=2.27",
     ],
     # Additional groups of dependencies. They can be install by using
     # the "extras" syntax, for example:
