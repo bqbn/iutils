@@ -124,6 +124,11 @@ def list_command(**kwargs):
 @add_common_options(common_options)
 @click.argument("search_by_term")
 def search_by(**kwargs):
+    """Search a member by a term.
+
+    The term should be in "<attribute>=<value>" form, for example "id=1234" or
+    "email=foo@example.com", etc.
+    """
     MembersCommand(**kwargs).search_by(kwargs["search_by_term"])
 
 
