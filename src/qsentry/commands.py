@@ -19,13 +19,24 @@ class Command:
 
 
 class MembersCommand(Command):
-    def run(self, **kwargs):
+    def list_command(self, **kwargs):
         if kwargs["team"]:
             self.handle_the_team_option(kwargs["team"], kwargs["role"])
-        elif kwargs["search_by"]:
-            self.handle_the_search_by_option(search_by_term=kwargs["search_by"])
-        elif kwargs["list_all"]:
-            self.handle_the_list_all_option(attrs=kwargs["list_all"])
+        elif kwargs["all"]:
+            if kwargs["attrs"]:
+                self.handle_the_list_all_option(attrs=kwargs["attrs"])
+            else:
+                self.handle_the_list_all_option(attrs=["id", "email"])
+
+    def search_by(self, search_by_term):
+        key, value = search_by_term.split("=")
+        for page in SentryApi(
+            self.host_url, self.org_slug, self.auth_token
+        ).org_members_api():
+            for member in page:
+                if member.get(key) == value:
+                    pprint.pprint(member)
+                    return None
 
     def handle_the_list_all_option(self, attrs):
         for page in SentryApi(
@@ -38,15 +49,6 @@ class MembersCommand(Command):
                 self.count += 1
         if self.print_count:
             print(f"Count: {self.count}")
-
-    def handle_the_search_by_option(self, search_by_term):
-        key, value = search_by_term.split("=")
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).org_members_api():
-            for member in page:
-                if member.get(key) == value:
-                    pprint.pprint(member)
 
     def handle_the_team_option(self, team_slug, role):
         for page in SentryApi(
@@ -63,13 +65,7 @@ class MembersCommand(Command):
 
 
 class OrgsCommand(Command):
-    def run(self, **kwargs):
-        if kwargs["list_projects"]:
-            self.handle_the_list_projects_option(attrs=kwargs["list_projects"])
-        elif kwargs["list_users"]:
-            self.handle_the_list_users_option(attrs=kwargs["list_users"])
-
-    def handle_the_list_projects_option(self, attrs):
+    def list_projects(self, attrs):
         for page in SentryApi(
             self.host_url, self.org_slug, self.auth_token
         ).org_projects_api():
@@ -81,7 +77,7 @@ class OrgsCommand(Command):
         if self.print_count:
             print(f"Count: {self.count}")
 
-    def handle_the_list_users_option(self, attrs):
+    def list_users(self, attrs):
         for page in SentryApi(
             self.host_url, self.org_slug, self.auth_token
         ).org_users_api():
@@ -92,6 +88,12 @@ class OrgsCommand(Command):
                 self.count += 1
         if self.print_count:
             print(f"Count: {self.count}")
+
+        print(
+            "Warning: this command may not list all users for the org_users "
+            "api does not paginate. Use the members command instead for full "
+            "list of members."
+        )
 
 
 class TeamsCommand(Command):
