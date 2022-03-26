@@ -10,7 +10,6 @@ from ..commands import ProjectsCommand
 
 
 @main.group(invoke_without_command=True)
-@add_common_options(common_options)
 def projects(*args, **kwargs):
     """Project related commands"""
     pass
