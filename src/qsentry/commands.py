@@ -17,6 +17,15 @@ class Command:
         self.print_count = kwargs.get("count")
         self.count = 0
 
+    def call_api_and_print_attrs(self, api, jmes_filter, *args, **kwargs):
+        sentry = SentryApi(self.host_url, self.org_slug, self.auth_token)
+        for page in getattr(sentry, api)(*args, **kwargs):
+            for item in jmespath.search(jmes_filter, page):
+                print(", ".join([str(val) for val in item.values()]))
+                self.count += 1
+        if self.print_count:
+            print(f"Count: {self.count}")
+
 
 class MembersCommand(Command):
     def list_command(self, **kwargs):
@@ -39,56 +48,28 @@ class MembersCommand(Command):
                     return None
 
     def handle_the_list_all_option(self, attrs):
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).org_members_api():
-            for member in jmespath.search(
-                f"[].{ multiselect_hash_string(attrs) }", page
-            ):
-                print(", ".join([str(val) for val in member.values()]))
-                self.count += 1
-        if self.print_count:
-            print(f"Count: {self.count}")
+        self.call_api_and_print_attrs(
+            "org_members_api", f"[].{ multiselect_hash_string(attrs) }"
+        )
 
     def handle_the_team_option(self, team_slug, role):
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).teams_members_api(team_slug):
-            for member in jmespath.search(
-                f"[?role == '{role}' && flags.\"sso:linked\"].{ multiselect_hash_string(['id', 'name', 'email']) }",
-                page,
-            ):
-                print(f"{member['id']}, {member['name']}, {member['email']}")
-                self.count += 1
-        if self.print_count:
-            print(f"Count: {self.count}")
+        self.call_api_and_print_attrs(
+            "teams_members_api",
+            f"[?role == '{role}' && flags.\"sso:linked\"].{ multiselect_hash_string(['id', 'name', 'email']) }",
+            team_slug,
+        )
 
 
 class OrgsCommand(Command):
     def list_projects(self, attrs):
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).org_projects_api():
-            for member in jmespath.search(
-                f"[].{ multiselect_hash_string(attrs) }", page
-            ):
-                print(", ".join([str(val) for val in member.values()]))
-                self.count += 1
-        if self.print_count:
-            print(f"Count: {self.count}")
+        self.call_api_and_print_attrs(
+            "org_projects_api", f"[].{ multiselect_hash_string(attrs) }"
+        )
 
     def list_users(self, attrs):
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).org_users_api():
-            for member in jmespath.search(
-                f"[].{ multiselect_hash_string(attrs) }", page
-            ):
-                print(", ".join([str(val) for val in member.values()]))
-                self.count += 1
-        if self.print_count:
-            print(f"Count: {self.count}")
-
+        self.call_api_and_print_attrs(
+            "org_users_api", f"[].{ multiselect_hash_string(attrs) }"
+        )
         print(
             "Warning: this command may not list all users for the org_users "
             "api does not paginate. Use the members command instead for full "
@@ -110,13 +91,6 @@ class TeamsCommand(Command):
 
 class ProjectsCommand(Command):
     def list_keys(self, project_slug, attrs):
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).project_keys_api(project_slug):
-            for member in jmespath.search(
-                f"[].{ multiselect_hash_string(attrs) }", page
-            ):
-                print(", ".join([str(val) for val in member.values()]))
-                self.count += 1
-        if self.print_count:
-            print(f"Count: {self.count}")
+        self.call_api_and_print_attrs(
+            "project_keys_api", f"[].{ multiselect_hash_string(attrs) }", project_slug
+        )
