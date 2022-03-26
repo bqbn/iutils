@@ -48,5 +48,7 @@ class SentryApi:
         return self.page_iterator(url)
 
     def project_keys_api(self, project_slug):
-        url = urljoin(self.host_url, f"/api/0/projects/{self.org_slug}/{project_slug}/keys/")
+        url = urljoin(
+            self.host_url, f"/api/0/projects/{self.org_slug}/{project_slug}/keys/"
+        )
         return self.page_iterator(url)
