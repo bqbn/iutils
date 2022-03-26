@@ -11,11 +11,10 @@ def multiselect_hash_string(attributes):
 
 class Command:
     def __init__(self, **kwargs):
-        self.host_url = kwargs["host_url"]
-        self.org_slug = kwargs["org"]
-        self.auth_token = kwargs["auth_token"]
-        self.project = kwargs.get("project", None)
-        self.print_count = kwargs["count"]
+        self.host_url = kwargs.get("host_url")
+        self.org_slug = kwargs.get("org")
+        self.auth_token = kwargs.get("auth_token")
+        self.print_count = kwargs.get("count")
         self.count = 0
 
 
@@ -110,10 +109,10 @@ class TeamsCommand(Command):
 
 
 class ProjectsCommand(Command):
-    def list_keys(self, attrs):
+    def list_keys(self, project_slug, attrs):
         for page in SentryApi(
             self.host_url, self.org_slug, self.auth_token
-        ).project_keys_api(self.project):
+        ).project_keys_api(project_slug):
             for member in jmespath.search(
                 f"[].{ multiselect_hash_string(attrs) }", page
             ):

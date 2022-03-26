@@ -37,4 +37,4 @@ def list_keys(**kwargs):
     change what attributes to show.
     """
     attrs = kwargs["attrs"] if kwargs["attrs"] else ["id", "dsn", "rateLimit"]
-    ProjectsCommand(**kwargs).list_keys(attrs)
+    ProjectsCommand(**kwargs).list_keys(kwargs["project"], attrs)
