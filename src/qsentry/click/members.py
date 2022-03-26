@@ -26,7 +26,6 @@ def members(*args, **kwargs):
 )
 @click.option(
     "--team",
-    envvar="QSENTRY_TEAM_SLUG",
     help="""Show the members of a given team. Should be used with --role option
             to filter by roles.""",
 )

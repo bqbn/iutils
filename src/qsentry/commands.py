@@ -14,6 +14,7 @@ class Command:
         self.host_url = kwargs["host_url"]
         self.org_slug = kwargs["org"]
         self.auth_token = kwargs["auth_token"]
+        self.project = kwargs.get("project", None)
         self.print_count = kwargs["count"]
         self.count = 0
 
@@ -103,6 +104,20 @@ class TeamsCommand(Command):
         ).org_teams_api():
             for team in page:
                 print(f"{team['slug']}")
+                self.count += 1
+        if self.print_count:
+            print(f"Count: {self.count}")
+
+
+class ProjectsCommand(Command):
+    def list_keys(self, attrs):
+        for page in SentryApi(
+            self.host_url, self.org_slug, self.auth_token
+        ).project_keys_api(self.project):
+            for member in jmespath.search(
+                f"[].{ multiselect_hash_string(attrs) }", page
+            ):
+                print(", ".join([str(val) for val in member.values()]))
                 self.count += 1
         if self.print_count:
             print(f"Count: {self.count}")

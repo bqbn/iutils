@@ -26,7 +26,6 @@ def orgs(*args, **kwargs):
     pass
 
 
-# Organization sub-commands
 @orgs.command()
 @add_common_options(common_options)
 @add_common_options(common_orgs_options)
