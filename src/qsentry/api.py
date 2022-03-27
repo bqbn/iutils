@@ -7,7 +7,7 @@ class SentryApi:
     def __init__(self, host_url, org_slug, auth_token):
         self.host_url = host_url
         self.org_slug = org_slug
-        self.auth_header = {"Authorization": f"Bearer {auth_token}"}
+        self.headers = {"Authorization": f"Bearer {auth_token}"}
 
     def page_iterator(self, url):
         """Return an iterator that goes through the paginated results.
@@ -15,7 +15,7 @@ class SentryApi:
         See https://docs.sentry.io/api/pagination/ for Sentry's pagination API.
         """
         while True:
-            res = requests.get(url, headers=self.auth_header)
+            res = requests.get(url, headers=self.headers)
             if res.status_code == requests.codes.ok:
                 yield res.json()
                 if res.links and res.links["next"]["results"] == "true":
@@ -52,3 +52,20 @@ class SentryApi:
             self.host_url, f"/api/0/projects/{self.org_slug}/{project_slug}/keys/"
         )
         return self.page_iterator(url)
+
+    def update_project_client_key(self, project_slug, key_id, data):
+        url = urljoin(
+            self.host_url,
+            f"/api/0/projects/{self.org_slug}/{project_slug}/keys/{key_id}/",
+        )
+
+        # PUT requests require a proper "Content-Type" header, thus we make one
+        # from self.headers.
+        headers = self.headers.copy()
+        headers.update({"Content-Type": "application/json"})
+
+        res = requests.put(url, headers=headers, data=data)
+        if res.status_code == requests.codes.ok:
+            return True
+        else:
+            res.raise_for_status()

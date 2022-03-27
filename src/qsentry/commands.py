@@ -94,3 +94,9 @@ class ProjectsCommand(Command):
         self.call_api_and_print_attrs(
             "project_keys_api", f"[].{ multiselect_hash_string(attrs) }", project_slug
         )
+
+    def update_key(self, project_slug, key_id, data):
+        if SentryApi(
+            self.host_url, self.org_slug, self.auth_token
+        ).update_project_client_key(project_slug, key_id, data):
+            print(f"Key {key_id} successfully updated.")
