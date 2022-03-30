@@ -21,6 +21,13 @@ def comma_separated_string_to_array(ctx, param, value):
 # The common_options idea is borrowed from https://github.com/pallets/click/issues/108
 common_options = [
     click.option(
+        "--attrs",
+        default="",
+        callback=comma_separated_string_to_array,
+        help="""The argument to this option should be a comma separated string.
+                For example, "id,name".""",
+    ),
+    click.option(
         "--auth-token",
         required=True,
         envvar="QSENTRY_AUTH_TOKEN",

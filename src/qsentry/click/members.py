@@ -3,7 +3,6 @@ import click
 from .main import (
     add_common_options,
     common_options,
-    comma_separated_string_to_array,
     main,
 )
 from ..commands import MembersCommand
@@ -31,13 +30,6 @@ def members(*args, **kwargs):
 )
 @click.option(
     "--role", default="admin", show_default=True, help="The role of the member."
-)
-@click.option(
-    "--attrs",
-    default="",
-    callback=comma_separated_string_to_array,
-    help="""The argument to this option should be a comma separated string. For
-            example, "id,email,name".""",
 )
 def list_command(**kwargs):
     """List members"""
