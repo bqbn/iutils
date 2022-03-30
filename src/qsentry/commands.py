@@ -78,15 +78,10 @@ class OrgsCommand(Command):
 
 
 class TeamsCommand(Command):
-    def run(self, **kwargs):
-        for page in SentryApi(
-            self.host_url, self.org_slug, self.auth_token
-        ).org_teams_api():
-            for team in page:
-                print(f"{team['slug']}")
-                self.count += 1
-        if self.print_count:
-            print(f"Count: {self.count}")
+    def list_command(self, attrs):
+        self.call_api_and_print_attrs(
+            "org_teams_api", f"[].{ multiselect_hash_string(attrs) }"
+        )
 
 
 class ProjectsCommand(Command):
