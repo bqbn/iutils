@@ -54,7 +54,7 @@ class MembersCommand(Command):
 
     def handle_the_team_option(self, team_slug, role):
         self.call_api_and_print_attrs(
-            "teams_members_api",
+            "team_members_api",
             f"[?role == '{role}' && flags.\"sso:linked\"].{ multiselect_hash_string(['id', 'name', 'email']) }",
             team_slug,
         )
@@ -81,6 +81,11 @@ class TeamsCommand(Command):
     def list_command(self, attrs):
         self.call_api_and_print_attrs(
             "org_teams_api", f"[].{ multiselect_hash_string(attrs) }"
+        )
+
+    def list_projects(self, team_slug, attrs):
+        self.call_api_and_print_attrs(
+            "team_projects_api", f"[].{ multiselect_hash_string(attrs) }", team_slug
         )
 
 
