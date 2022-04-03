@@ -34,7 +34,6 @@ setup(
     entry_points={
         "console_scripts": [
             "qaws=qaws.qaws:cli",
-            "qsentry=qsentry.qsentry:main",
         ],
     },
 )
