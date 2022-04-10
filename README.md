@@ -1,5 +1,11 @@
 This package includes various utility modules I find useful.
 
+# Install
+
+```
+pip install iutils
+```
+
 # pcolrm
 
 ```
