@@ -34,6 +34,7 @@ setup(
     entry_points={
         "console_scripts": [
             "qaws=qaws.qaws:cli",
+            "pcolrm=pcolrm.pcolrm:main",
         ],
     },
 )
