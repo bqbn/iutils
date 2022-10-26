@@ -33,8 +33,9 @@ setup(
     dependency_links=[],
     entry_points={
         "console_scripts": [
-            "qaws=qaws.qaws:cli",
             "pcolrm=pcolrm.pcolrm:main",
+            "qaws=qaws.qaws:cli",
+            "webhook=webhook.webhook:main",
         ],
     },
 )
