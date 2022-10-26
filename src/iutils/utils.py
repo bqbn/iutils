@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 def remove_last_n_chars(string: str, n: int):
     if type(n) is not int:
         raise TypeError(f"`{n}' must be an integrer.")
@@ -10,7 +11,7 @@ def remove_last_n_chars(string: str, n: int):
     if len(string) <= n:
         return ""
 
-    return string[:len(string)-n]
+    return string[: len(string) - n]
 
 
 def two_level_split(line, sep=" ", quote='"'):

@@ -28,16 +28,16 @@ class TestTwoLevelSplit(unittest.TestCase):
 
 class TestRemoveLastNChars(unittest.TestCase):
     def test_remove_last_n_chars(self):
-        self.assertEqual(remove_last_n_chars('foo', 0), "foo")
-        self.assertEqual(remove_last_n_chars('foo', 1), "fo")
-        self.assertEqual(remove_last_n_chars('foo', 3), "")
-        self.assertEqual(remove_last_n_chars('foo', 4), "")
+        self.assertEqual(remove_last_n_chars("foo", 0), "foo")
+        self.assertEqual(remove_last_n_chars("foo", 1), "fo")
+        self.assertEqual(remove_last_n_chars("foo", 3), "")
+        self.assertEqual(remove_last_n_chars("foo", 4), "")
 
         with self.assertRaises(ValueError):
-            remove_last_n_chars('foo', -1)
+            remove_last_n_chars("foo", -1)
 
         with self.assertRaises(TypeError):
-            remove_last_n_chars('foo', 1.5)
+            remove_last_n_chars("foo", 1.5)
 
         with self.assertRaises(TypeError):
-            remove_last_n_chars('foo', 'foo')
+            remove_last_n_chars("foo", "foo")
