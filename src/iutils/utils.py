@@ -1,5 +1,17 @@
 #!/usr/bin/env python
 
+def remove_last_n_chars(string: str, n: int):
+    if type(n) is not int:
+        raise TypeError(f"`{n}' must be an integrer.")
+
+    if n < 0:
+        raise ValueError(f"`{n}' must be greater than or equal to 0.")
+
+    if len(string) <= n:
+        return ""
+
+    return string[:len(string)-n]
+
 
 def two_level_split(line, sep=" ", quote='"'):
     """Split a line by sep.
