@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-
-
 def remove_last_n_chars(string: str, n: int):
+    """Given a string, return the string with its last n characters removed."""
     if type(n) is not int:
         raise TypeError(f"`{n}' must be an integrer.")
 
