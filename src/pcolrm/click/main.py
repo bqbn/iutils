@@ -29,9 +29,9 @@ def validate_col_nums(ctx, param, value):
                     f"The range `{val}' is too large! It should be no greater than 1 thousand."
                 )
 
-            # Here we add one to the end because the list the range() function generates
-            # doesn't include the "end" number. However for this program's purpose it
-            # should be included.
+            # Here we add one to the end because the list, which the range()
+            # function generates, doesn't include the "end" number. However for
+            # this program's purpose it should be included.
             nums += list(range(start, end + 1))
         else:
             try:
