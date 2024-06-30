@@ -10,9 +10,9 @@ from setuptools import setup, find_packages
 setup(
     # packages=find_packages(exclude=["contrib", "docs", "tests"]),
     install_requires=[
-        "awscli~=1.22",
+        "awscli~=2.17",
         "boto3~=1.21",
-        "click~=8.0",
+        "click~=8.1",
         "jmespath~=1.0",
         "requests~=2.27",
     ],
@@ -22,9 +22,9 @@ setup(
     #   $ pip install <module-name>[dev]
     extras_require={
         "dev": [
-            "build~=0.7.0",
+            "build~=1.2",
             "pipenv-setup~=3.2",
-            "twine~=3.2",
+            "twine~=5.1",
             "wheel~=0.34",
         ],
         "test": [],

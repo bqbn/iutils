@@ -7,6 +7,7 @@ clean:
 	rm -rfv build/ dist/
 
 publish: build
+	# Use the TWINE_USERNAME and TWINE_PASSWORD to help auto-authentication.
 	pipenv run twine upload dist/*
 
 tests:

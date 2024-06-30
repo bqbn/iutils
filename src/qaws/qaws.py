@@ -1,11 +1,35 @@
 import click
+import importlib.metadata
 
-from awscli.completer import Completer as AwsCompleter
 from .ec2 import EC2
 from .elb import ELB
 from .resources import Resources
 from .route53 import Route53
 
+awscli_version = "1"
+try:
+    awscli_version = importlib.metadata.version("awscli")
+except importlib.metadata.PackageNotFoundError:
+    pass
+
+# The awscli package v1 and v2 have different functions to do the auto-completion.
+# See
+#  * https://github.com/aws/aws-cli/blob/develop/awscli/completer.py
+#  * https://github.com/aws/aws-cli/blob/v2/awscli/autocomplete/main.py
+#
+# The "position" parameter of the "complete" and "autocomplete" functions denotes
+# from which position of the command line to start the auto-completing the commands.
+#
+if awscli_version.startswith("1"):
+    from awscli.completer import Completer as AwsCompleter
+    def all_aws_commands():
+        return AwsCompleter().complete("aws", 3)
+elif awscli_version.startswith("2"):
+    from awscli.autocomplete.main import create_autocompleter
+    def all_aws_commands():
+        return [ r.name for r in create_autocompleter().autocomplete("aws ", 4) ]
+else:
+    raise VauleError(f"Unrecognized awscli version: `{awscli_version}'.")
 
 # Need invoke_without_commands=True because need to call --all-commands
 # without any command.
@@ -17,7 +41,7 @@ from .route53 import Route53
 )
 def cli(*args, **kwargs):
     if kwargs["all_commands"]:
-        for cmd in AwsCompleter().complete("aws", 3):
+        for cmd in all_aws_commands():
             click.echo(cmd)
 
 
