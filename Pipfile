@@ -7,7 +7,7 @@ verify_ssl = true
 # package version specifiers.
 [dev-packages]
 build = "*"
-black = "~= 22.1"
+black = "*"
 pipenv-setup = "*"
 twine = "*"
 wheel = "*"
@@ -18,10 +18,10 @@ wheel = "*"
 pip = "*"
 
 awscli = "*"
-boto3 = "~= 1.21"
-click = "~= 8.0"
-jmespath = "~= 1.0"
-requests = "~= 2.27"
+boto3 = "*"
+click = "*"
+jmespath = "*"
+requests = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.11"
